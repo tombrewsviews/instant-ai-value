@@ -1,23 +1,16 @@
-
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install --production
+# Copy package.json and install dependencies
+COPY ./src/backend/package*.json ./
+RUN npm install
 
 # Copy backend code
-COPY . .
+COPY ./src/backend ./
 
-# Set environment variables
-ENV PORT=8000
-ENV NODE_ENV=production
-
-# Expose the port
+# Expose the port your app runs on
 EXPOSE 8000
 
-# Start the server
+# Command to run the application
 CMD ["node", "server.js"]
