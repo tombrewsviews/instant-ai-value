@@ -1,4 +1,12 @@
+
 # Welcome to your Lovable project
+
+## Project structure
+
+This project is structured as a monorepo with separate frontend and backend code:
+
+- Frontend: The React application built with Vite, TypeScript, and shadcn/ui
+- Backend: A simple Express.js server in the `src/backend` directory
 
 ## Project info
 
@@ -36,6 +44,19 @@ npm i
 npm run dev
 ```
 
+For the backend:
+
+```sh
+# Navigate to the backend directory
+cd src/backend
+
+# Install backend dependencies (if using a separate package.json)
+npm i
+
+# Start the backend server
+node server.js
+```
+
 **Edit a file directly in GitHub**
 
 - Navigate to the desired file(s).
@@ -52,18 +73,29 @@ npm run dev
 
 ## What technologies are used for this project?
 
-This project is built with .
+This project is built with:
 
+### Frontend
 - Vite
 - TypeScript
 - React
 - shadcn-ui
 - Tailwind CSS
 
+### Backend
+- Express.js
+- Node.js
+
 ## How can I deploy this project?
 
+### Frontend
 Simply open [Lovable](https://lovable.dev/projects/d3d11f05-2dc1-45a1-accc-02957e26f40a) and click on Share -> Publish.
+
+### Backend
+See the `src/backend/DEPLOY.md` file for detailed instructions on deploying the backend to Koyeb.
 
 ## I want to use a custom domain - is that possible?
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+We don't support custom domains (yet) for the frontend deployment through Lovable. If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+
+For the backend on Koyeb, you can add a custom domain through the Koyeb dashboard.
