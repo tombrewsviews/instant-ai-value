@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -61,7 +60,7 @@ const Index: React.FC = () => {
     setGeneratedPhotos([]);
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!uploadedImage) {
       toast.error("Please upload an image first");
       return;
@@ -70,12 +69,36 @@ const Index: React.FC = () => {
     setIsGenerating(true);
     setGeneratedPhotos([]);
 
-    // Simulate API call with timeout
-    setTimeout(() => {
-      setGeneratedPhotos(MOCK_PHOTOS);
-      setIsGenerating(false);
+    try {
+      const formData = new FormData();
+      formData.append("image", uploadedImage);
+
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/process-image`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to process image");
+      }
+
+      const data = await response.json();
+      
+      // Convert the base64 images to URLs
+      const photos = data.images.map((base64Image: string, index: number) => ({
+        id: `photo${index + 1}`,
+        url: `data:image/jpeg;base64,${base64Image}`,
+        watermarked: false,
+      }));
+
+      setGeneratedPhotos(photos);
       toast.success("Your professional headshots are ready!");
-    }, 3000);
+    } catch (error) {
+      console.error("Error generating photos:", error);
+      toast.error("Failed to generate photos. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (

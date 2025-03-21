@@ -5,6 +5,8 @@ import axios from "axios";
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import multer from "multer";
+import { Buffer } from "buffer";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,44 +28,50 @@ app.use(
 // Parse JSON request body
 app.use(express.json());
 
+// Configure multer for memory storage
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
+});
+
 // Health check endpoint
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-// Endpoint to process text with Flux-1 model
-app.post("/api/process", async (req, res) => {
+// Endpoint to process image with Flux model
+app.post("/api/process-image", upload.single("image"), async (req, res) => {
   try {
-    const { text } = req.body;
-
-    if (!text) {
-      return res.status(400).json({ error: "Text is required" });
+    if (!req.file) {
+      return res.status(400).json({ error: "No image file provided" });
     }
 
-    // Call Flux-1 API
-    // Replace with actual Flux-1 API endpoint and authentication
+    // Convert the image buffer to base64
+    const base64Image = req.file.buffer.toString("base64");
+
+    // Call Flux model API
     const fluxResponse = await axios.post(
-      process.env.FLUX_API_URL || "https://api.flux.com/v1/generate",
+      process.env.KOYEB_URL || "https://your-domain-prefix.koyeb.app/predict",
       {
-        prompt: text,
-        max_tokens: 500,
+        prompt: "A professional headshot",
+        image: base64Image,
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.FLUX_API_KEY}`,
           "Content-Type": "application/json",
         },
       }
     );
 
     return res.json({
-      result: fluxResponse.data,
-      input: text,
+      images: fluxResponse.data.images,
     });
   } catch (error) {
-    console.error("Error processing request:", error);
+    console.error("Error processing image:", error);
     return res.status(500).json({
-      error: "Failed to process request",
+      error: "Failed to process image",
       details: error.message,
     });
   }
