@@ -73,9 +73,15 @@ const Index: React.FC = () => {
       const formData = new FormData();
       formData.append("image", uploadedImage);
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/predict`, {
+      const apiUrl = import.meta.env.VITE_API_URL.replace(/\/$/, ''); // Remove trailing slash if present
+      const response = await fetch(`${apiUrl}/predict`, {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: `A professional headshot in ${selectedStyle} style`
+        }),
       });
 
       if (!response.ok) {
