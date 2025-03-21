@@ -2,7 +2,7 @@
 import { toast } from "sonner";
 
 // Define the API base URL with environment variable fallback
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 /**
  * Generic API client function for making fetch requests

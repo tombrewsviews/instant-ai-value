@@ -16,11 +16,13 @@ This guide will help you deploy the backend service to Koyeb.
    - Branch: main (or your preferred branch)
    - **Source Directory**: src/backend
    - Docker Configuration:
-     - Path to Dockerfile: Dockerfile
+     - Dockerfile location: Dockerfile
+     - Work directory: (leave blank)
    - Environment variables:
-     - PORT: 5000
+     - PORT: 8000
      - NODE_ENV: production
-   - Ports: 5000:http
+   - Exposed ports: 8000
+   - Health check: TCP on port 8000
 
 ### 2. Frontend Deployment
 
@@ -32,6 +34,7 @@ For the frontend, create a separate service:
 4. Configure the following settings:
    - Repository: Your GitHub repository
    - Branch: main (or your preferred branch)
+   - Source Directory: (leave blank, to use the root directory)
    - Build Command: `npm install && npm run build`
    - Run Command: `npx serve -s dist`
    - Environment variables:
