@@ -1,30 +1,75 @@
+// src/backend/server.js
+import express from "express";
+import cors from "cors";
+import axios from "axios";
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
-// This is a simple Express.js server
-const express = require('express');
-const cors = require('cors');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+dotenv.config();
+
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
-// Enable CORS for all routes
-app.use(cors());
+// Enable CORS for frontend requests
+app.use(
+  cors({
+    origin: process.env.ALLOWED_ORIGINS || "*",
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// Parse JSON request body
 app.use(express.json());
 
-// Sample API endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Backend is running' });
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
 });
 
-// User profiles endpoint (mock data)
-app.get('/api/profiles', (req, res) => {
-  const mockProfiles = [
-    { id: 1, name: 'Sarah Johnson', title: 'UX Designer', photo: 'https://randomuser.me/api/portraits/women/44.jpg' },
-    { id: 2, name: 'David Chen', title: 'Software Engineer', photo: 'https://randomuser.me/api/portraits/men/32.jpg' },
-    { id: 3, name: 'Maya Patel', title: 'Product Manager', photo: 'https://randomuser.me/api/portraits/women/68.jpg' },
-  ];
-  
-  res.json(mockProfiles);
+// Endpoint to process text with Flux-1 model
+app.post("/api/process", async (req, res) => {
+  try {
+    const { text } = req.body;
+
+    if (!text) {
+      return res.status(400).json({ error: "Text is required" });
+    }
+
+    // Call Flux-1 API
+    // Replace with actual Flux-1 API endpoint and authentication
+    const fluxResponse = await axios.post(
+      process.env.FLUX_API_URL || "https://api.flux.com/v1/generate",
+      {
+        prompt: text,
+        max_tokens: 500,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.FLUX_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return res.json({
+      result: fluxResponse.data,
+      input: text,
+    });
+  } catch (error) {
+    console.error("Error processing request:", error);
+    return res.status(500).json({
+      error: "Failed to process request",
+      details: error.message,
+    });
+  }
 });
 
-app.listen(PORT, () => {
+// Start the server
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });

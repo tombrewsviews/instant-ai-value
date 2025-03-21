@@ -3,14 +3,14 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Copy package.json and install dependencies
-COPY ./src/backend/package*.json ./
+COPY package*.json ./
 RUN npm install
 
-# Copy backend code
-COPY ./src/backend ./
+# Copy the rest of the application
+COPY . .
 
-# Expose the port your app runs on
+# Expose the port
 EXPOSE 8000
 
-# Command to run the application
+# Start the application
 CMD ["node", "server.js"]
