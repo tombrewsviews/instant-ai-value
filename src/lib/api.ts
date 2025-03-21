@@ -1,8 +1,8 @@
 
 import { toast } from "sonner";
 
-// Replace this with your deployed backend URL when available
-const API_BASE_URL = "http://localhost:5000";
+// Define the API base URL with environment variable fallback
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 /**
  * Generic API client function for making fetch requests

@@ -1,5 +1,5 @@
 
-FROM node:18-slim
+FROM node:18-alpine
 
 WORKDIR /app
 
@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --production
 
 # Copy backend code
 COPY . .

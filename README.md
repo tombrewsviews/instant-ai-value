@@ -3,9 +3,9 @@
 
 ## Project structure
 
-This project is structured as a monorepo with separate frontend and backend code:
+This project is structured with separate frontend and backend code:
 
-- Frontend: The React application built with Vite, TypeScript, and shadcn/ui
+- Frontend: The React application (main project directory)
 - Backend: A simple Express.js server in the `src/backend` directory
 
 ## Project info
@@ -50,52 +50,36 @@ For the backend:
 # Navigate to the backend directory
 cd src/backend
 
-# Install backend dependencies (if using a separate package.json)
+# Install backend dependencies (if necessary)
 npm i
 
 # Start the backend server
 node server.js
 ```
 
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-### Frontend
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-### Backend
-- Express.js
-- Node.js
-
 ## How can I deploy this project?
 
 ### Frontend
-Simply open [Lovable](https://lovable.dev/projects/d3d11f05-2dc1-45a1-accc-02957e26f40a) and click on Share -> Publish.
+1. Open [Lovable](https://lovable.dev/projects/d3d11f05-2dc1-45a1-accc-02957e26f40a) and click on Share -> Publish, or
+2. Deploy to a service like Netlify, Vercel, or GitHub Pages
 
 ### Backend
-See the `src/backend/DEPLOY.md` file for detailed instructions on deploying the backend to Koyeb.
+1. Create a service on Koyeb pointing to the `src/backend` directory
+2. Set the environment variables as described in `src/backend/DEPLOY.md`
+3. Deploy and get the backend URL
+4. Update your frontend's environment variable `VITE_API_BASE_URL` with the backend URL
 
-## I want to use a custom domain - is that possible?
+## Deployment Configuration
 
-We don't support custom domains (yet) for the frontend deployment through Lovable. If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+### Backend Deployment (Koyeb)
+- Source directory: src/backend
+- Dockerfile path: Dockerfile
+- Environment variables: PORT=5000, NODE_ENV=production
+- Exposed port: 5000
 
-For the backend on Koyeb, you can add a custom domain through the Koyeb dashboard.
+### Frontend Deployment
+- Build command: npm install && npm run build
+- Output directory: dist
+- Environment variables: VITE_API_BASE_URL=https://your-backend-url.koyeb.app
+
+See `src/backend/DEPLOY.md` for detailed instructions.
