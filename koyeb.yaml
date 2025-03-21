@@ -13,6 +13,10 @@ services:
         value: production
     build:
       builder: buildpack
-      buildCommand: npm install
-      runCommand: node server.js
-      workdir: /workspace/src/backend
+    routes:
+      - path: /
+        port: 8000
+    commands:
+      - npm install
+      - node server.js
+    workdir: /workspace/src/backend
