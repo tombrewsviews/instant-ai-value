@@ -73,7 +73,7 @@ const Index: React.FC = () => {
       const formData = new FormData();
       formData.append("image", uploadedImage);
 
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/process-image`, {
+      const response = await fetch(`http://localhost:8000/api/process-image`, {
         method: "POST",
         body: formData,
       });
@@ -87,7 +87,7 @@ const Index: React.FC = () => {
       // Convert the base64 images to URLs
       const photos = data.images.map((base64Image: string, index: number) => ({
         id: `photo${index + 1}`,
-        url: `data:image/jpeg;base64,${base64Image}`,
+        url: base64Image.startsWith('data:') ? base64Image : `data:image/jpeg;base64,${base64Image}`,
         watermarked: false,
       }));
 
