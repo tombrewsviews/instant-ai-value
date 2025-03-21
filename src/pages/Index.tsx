@@ -74,7 +74,7 @@ const Index: React.FC = () => {
       formData.append("image", uploadedImage);
 
       const apiUrl = import.meta.env.VITE_API_URL.replace(/\/$/, ''); // Remove trailing slash if present
-      const response = await fetch(`${apiUrl}/predict`, {
+      const response = await fetch(`${apiUrl}/predict`.replace('//', '/'), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
