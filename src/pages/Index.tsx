@@ -73,7 +73,7 @@ const Index: React.FC = () => {
       const formData = new FormData();
       formData.append("image", uploadedImage);
 
-      const response = await fetch(`http://localhost:8000/api/process-image`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/predict`, {
         method: "POST",
         body: formData,
       });
